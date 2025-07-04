@@ -36,13 +36,13 @@ M.download_exercises = function(callback)
 
 	notify("Downloading Ziglings exercises...")
 
-	-- Download from GitHub
+	-- Download from Codeberg (new official location)
 	vim.system({
 		"git",
 		"clone",
 		"--depth",
 		"1",
-		"https://github.com/ratfactor/ziglings.git",
+		"https://codeberg.org/ziglings/exercises.git",
 		exercises_path,
 	}, {
 		text = true,
