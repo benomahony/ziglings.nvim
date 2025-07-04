@@ -49,12 +49,6 @@ M.download_exercises = function(callback)
 	}, function(result)
 		vim.schedule(function()
 			if result.code == 0 then
-				-- Initialize progress file
-				local progress_file = exercises_path .. "/.progress.txt"
-				if vim.fn.filereadable(progress_file) == 0 then
-					vim.fn.writefile({ "1" }, progress_file)
-				end
-
 				notify("✅ Ziglings exercises downloaded successfully!")
 				if callback then
 					callback(true)
