@@ -17,8 +17,19 @@ A Neovim plugin for working with [Ziglings](https://ziglings.org/) exercises. Pr
 ```lua
 {
   "benomahony/ziglings.nvim",
+  ft = "zig", -- Auto-initializes when opening .zig files
+}
+```
+
+Or with custom configuration:
+
+```lua
+{
+  "benomahony/ziglings.nvim",
   config = function()
-    require("ziglings").setup()
+    require("ziglings").setup({
+      -- Custom options here
+    })
   end,
   ft = "zig",
 }
@@ -29,14 +40,15 @@ A Neovim plugin for working with [Ziglings](https://ziglings.org/) exercises. Pr
 ```lua
 use {
   "benomahony/ziglings.nvim",
-  config = function()
-    require("ziglings").setup()
-  end,
-  ft = "zig",
+  ft = "zig", -- Auto-initializes when opening .zig files
 }
 ```
 
 ## Configuration
+
+**No configuration required!** The plugin auto-initializes when opening `.zig` files in a Ziglings project.
+
+For custom configuration:
 
 ```lua
 require("ziglings").setup({

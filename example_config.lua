@@ -1,6 +1,13 @@
 -- Example configuration for your init.lua or plugin config
 
--- If using lazy.nvim:
+-- Minimal setup (auto-initializes):
+{
+  dir = "/Users/benomahony/Code/open_source/ziglings.nvim",
+  name = "ziglings.nvim",
+  ft = "zig",
+}
+
+-- Or with custom configuration:
 {
   dir = "/Users/benomahony/Code/open_source/ziglings.nvim",
   name = "ziglings.nvim",
@@ -25,6 +32,5 @@
   ft = "zig",
 }
 
--- Or if not using a plugin manager, add to your init.lua:
+-- Or if not using a plugin manager, the plugin auto-initializes:
 -- vim.opt.rtp:append("/Users/benomahony/Code/open_source/ziglings.nvim")
--- require("ziglings").setup()
