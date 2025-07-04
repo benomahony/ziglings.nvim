@@ -1,6 +1,5 @@
 local M = {}
 
-local config = require("ziglings.config")
 local download = require("ziglings.download")
 
 M.get_progress = function()

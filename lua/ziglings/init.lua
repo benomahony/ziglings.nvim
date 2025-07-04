@@ -7,9 +7,7 @@ local download = require("ziglings.download")
 
 local initialized = false
 
-local function ensure_initialized()
-  if initialized then return end
-  
+local function initialize()
   config.setup()
   build.setup_autocmds()
   
@@ -21,17 +19,15 @@ local function ensure_initialized()
   initialized = true
 end
 
--- Auto-initialize when any API function is called
+local function ensure_initialized()
+  if initialized then return end
+  initialize()
+end
+
+-- Setup function for manual configuration
 M.setup = function(opts)
   config.setup(opts)
-  build.setup_autocmds()
-  
-  -- Auto-download on setup if enabled
-  if config.options.auto_download then
-    download.ensure_downloaded()
-  end
-  
-  initialized = true
+  initialize()
 end
 
 -- Public API with auto-initialization
@@ -45,18 +41,13 @@ M.toggle_auto_build = function() ensure_initialized(); return build.toggle_auto_
 M.download = function(...) ensure_initialized(); return download.download_exercises(...) end
 
 -- Auto-initialize when plugin loads
-local function auto_init()
-  ensure_initialized()
-end
-
--- Auto-initialize when plugin loads
-vim.defer_fn(auto_init, 100)
+vim.defer_fn(ensure_initialized, 100)
 
 -- Also auto-initialize when opening .zig files
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "zig",
   once = true,
-  callback = auto_init,
+  callback = ensure_initialized,
   desc = "Auto-initialize ziglings.nvim for Zig files",
 })
 
