@@ -4,7 +4,7 @@ A Neovim plugin for learning Zig with [Ziglings](https://ziglings.org/) exercise
 
 ## Features
 
-- 🚀 **Automatic setup**: Downloads and manages Ziglings exercises automatically
+- 🚀 **One-time setup**: Downloads and caches Ziglings exercises on first use
 - 🔧 **Auto-build on save**: Automatically runs `zig build` when you save `.zig` files
 - 📍 **Exercise navigation**: Jump between exercises with simple commands
 - 📊 **Progress tracking**: See which exercises you've completed
@@ -20,7 +20,7 @@ A Neovim plugin for learning Zig with [Ziglings](https://ziglings.org/) exercise
 ```lua
 {
   "benomahony/ziglings.nvim",
-  ft = "zig", -- Auto-downloads exercises when you open .zig files
+  ft = "zig", -- Downloads exercises on first use
 }
 ```
 
@@ -43,7 +43,7 @@ Or with custom configuration:
 ```lua
 use {
   "benomahony/ziglings.nvim",
-  ft = "zig", -- Auto-downloads exercises when you open .zig files
+  ft = "zig", -- Downloads exercises on first use
 }
 ```
 
@@ -97,7 +97,7 @@ require("ziglings").setup({
 
 ## How it works
 
-The plugin automatically downloads the Ziglings repository to your Neovim data directory (`~/.local/share/nvim/ziglings` on Linux/macOS) when you first use any Ziglings command or open a `.zig` file.
+The plugin automatically downloads the Ziglings repository to your Neovim data directory (`~/.local/share/nvim/ziglings` on Linux/macOS) **once** when you first use any Ziglings command or open a `.zig` file. Subsequent uses are instant since the exercises are already cached locally.
 
 It tracks your progress through a `.progress.txt` file and provides easy navigation between exercises. When auto-build is enabled (default), saving any `.zig` file will trigger `zig build` and show you the results via notifications.
 
