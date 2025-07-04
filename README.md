@@ -4,34 +4,18 @@ A Neovim plugin for learning Zig with [Ziglings](https://ziglings.org/) exercise
 
 ## Features
 
-- 🚀 **One-time setup**: Downloads and caches Ziglings exercises on first use
-- 🔧 **Auto-build on save**: Automatically runs `zig build` when you save `.zig` files
-- 📍 **Exercise navigation**: Jump between exercises with simple commands
-- 📊 **Progress tracking**: See which exercises you've completed
-- 🔔 **Smart notifications**: Get build results with full error context
-- ⚡ **Snacks.nvim integration**: Enhanced notifications if you use snacks.nvim
-- 🎯 **Zero configuration**: Works out of the box
-- 💾 **Self-contained**: No need to manually clone or manage Ziglings
+- Auto-downloads Ziglings exercises
+- Builds on save
+- Exercise navigation
+- Progress tracking
+- Zero configuration
 
 ## Installation
 
 ### lazy.nvim
 
 ```lua
--- Minimal setup
-{
-  "benomahony/ziglings.nvim",
-}
-
--- With custom options
-{
-  "benomahony/ziglings.nvim",
-  opts = {
-    auto_build = true,
-    auto_download = true,
-    -- other options...
-  },
-}
+{ "benomahony/ziglings.nvim" }
 ```
 
 ### packer.nvim
@@ -42,41 +26,21 @@ use "benomahony/ziglings.nvim"
 
 ## Configuration
 
-**No configuration required!** The plugin auto-initializes and downloads exercises when needed.
+**No configuration required!**
 
-For custom configuration, use `opts` with lazy.nvim:
+For customization:
 
 ```lua
 {
   "benomahony/ziglings.nvim",
   opts = {
-    auto_build = true,
-    auto_download = true,
-    notifications = {
-      enabled = true,
-      timeout = 5000,
-      error_timeout = 10000,
-    },
     keymaps = {
       next_exercise = "<leader>zn",
       prev_exercise = "<leader>zp",
       current_exercise = "<leader>zc",
-      build = "<leader>zb",
-      toggle_auto_build = "<leader>zt",
-      download = "<leader>zd",
     },
   },
 }
-```
-
-Or with manual setup:
-
-```lua
-require("ziglings").setup({
-  auto_build = true,
-  auto_download = true,
-  -- same options as above...
-})
 ```
 
 ## Usage
