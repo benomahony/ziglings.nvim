@@ -18,58 +18,64 @@ A Neovim plugin for learning Zig with [Ziglings](https://ziglings.org/) exercise
 ### lazy.nvim
 
 ```lua
+-- Minimal setup
 {
   "benomahony/ziglings.nvim",
-  ft = "zig", -- Downloads exercises on first use
 }
-```
 
-Or with custom configuration:
-
-```lua
+-- With custom options
 {
   "benomahony/ziglings.nvim",
-  config = function()
-    require("ziglings").setup({
-      -- Custom options here
-    })
-  end,
-  ft = "zig",
+  opts = {
+    auto_build = true,
+    auto_download = true,
+    -- other options...
+  },
 }
 ```
 
 ### packer.nvim
 
 ```lua
-use {
-  "benomahony/ziglings.nvim",
-  ft = "zig", -- Downloads exercises on first use
-}
+use "benomahony/ziglings.nvim"
 ```
 
 ## Configuration
 
 **No configuration required!** The plugin auto-initializes and downloads exercises when needed.
 
-For custom configuration:
+For custom configuration, use `opts` with lazy.nvim:
+
+```lua
+{
+  "benomahony/ziglings.nvim",
+  opts = {
+    auto_build = true,
+    auto_download = true,
+    notifications = {
+      enabled = true,
+      timeout = 5000,
+      error_timeout = 10000,
+    },
+    keymaps = {
+      next_exercise = "<leader>zn",
+      prev_exercise = "<leader>zp",
+      current_exercise = "<leader>zc",
+      build = "<leader>zb",
+      toggle_auto_build = "<leader>zt",
+      download = "<leader>zd",
+    },
+  },
+}
+```
+
+Or with manual setup:
 
 ```lua
 require("ziglings").setup({
   auto_build = true,
   auto_download = true,
-  notifications = {
-    enabled = true,
-    timeout = 5000,
-    error_timeout = 10000,
-  },
-  keymaps = {
-    next_exercise = "<leader>zn",
-    prev_exercise = "<leader>zp",
-    current_exercise = "<leader>zc",
-    build = "<leader>zb",
-    toggle_auto_build = "<leader>zt",
-    download = "<leader>zd",
-  },
+  -- same options as above...
 })
 ```
 
