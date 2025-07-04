@@ -15,7 +15,9 @@ A Neovim plugin for learning Zig with [Ziglings](https://ziglings.org/) exercise
 ### lazy.nvim
 
 ```lua
-{ "benomahony/ziglings.nvim" }
+return {
+  "benomahony/ziglings.nvim" 
+}
 ```
 
 ### packer.nvim
