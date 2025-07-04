@@ -1,16 +1,17 @@
 # ziglings.nvim
 
-A Neovim plugin for working with [Ziglings](https://ziglings.org/) exercises. Automatically detects your Ziglings installation and provides auto-building, exercise navigation, and progress tracking.
+A Neovim plugin for learning Zig with [Ziglings](https://ziglings.org/) exercises. The plugin automatically downloads and manages all exercises, provides auto-building, exercise navigation, and progress tracking.
 
 ## Features
 
-- 🔍 **Auto-discovery**: Automatically finds your Ziglings installation
-- 🚀 **Auto-build on save**: Automatically runs `zig build` when you save `.zig` files
+- 🚀 **Automatic setup**: Downloads and manages Ziglings exercises automatically
+- 🔧 **Auto-build on save**: Automatically runs `zig build` when you save `.zig` files
 - 📍 **Exercise navigation**: Jump between exercises with simple commands
 - 📊 **Progress tracking**: See which exercises you've completed
 - 🔔 **Smart notifications**: Get build results with full error context
 - ⚡ **Snacks.nvim integration**: Enhanced notifications if you use snacks.nvim
 - 🎯 **Zero configuration**: Works out of the box
+- 💾 **Self-contained**: No need to manually clone or manage Ziglings
 
 ## Installation
 
@@ -19,7 +20,7 @@ A Neovim plugin for working with [Ziglings](https://ziglings.org/) exercises. Au
 ```lua
 {
   "benomahony/ziglings.nvim",
-  ft = "zig", -- Auto-initializes when opening .zig files
+  ft = "zig", -- Auto-downloads exercises when you open .zig files
 }
 ```
 
@@ -42,19 +43,20 @@ Or with custom configuration:
 ```lua
 use {
   "benomahony/ziglings.nvim",
-  ft = "zig", -- Auto-initializes when opening .zig files
+  ft = "zig", -- Auto-downloads exercises when you open .zig files
 }
 ```
 
 ## Configuration
 
-**No configuration required!** The plugin auto-initializes when opening `.zig` files in a Ziglings project.
+**No configuration required!** The plugin auto-initializes and downloads exercises when needed.
 
 For custom configuration:
 
 ```lua
 require("ziglings").setup({
   auto_build = true,
+  auto_download = true,
   notifications = {
     enabled = true,
     timeout = 5000,
@@ -66,6 +68,7 @@ require("ziglings").setup({
     current_exercise = "<leader>zc",
     build = "<leader>zb",
     toggle_auto_build = "<leader>zt",
+    download = "<leader>zd",
   },
 })
 ```
@@ -81,6 +84,7 @@ require("ziglings").setup({
 - `:ZiglingsList` - List all exercises with completion status
 - `:ZiglingsBuild` - Manually trigger build
 - `:ZiglingsToggle` - Toggle auto-build on/off
+- `:ZiglingsDownload` - Manually download/update exercises
 
 ### Default Keymaps
 
@@ -89,24 +93,29 @@ require("ziglings").setup({
 - `<leader>zc` - Current exercise
 - `<leader>zb` - Build
 - `<leader>zt` - Toggle auto-build
+- `<leader>zd` - Download exercises
 
 ## How it works
 
-The plugin automatically detects your Ziglings installation by searching:
-1. The current file's directory tree (if editing a Ziglings exercise)
-2. Common Ziglings locations: `~/ziglings`, `~/Code/ziglings`, `~/Code/learning/ziglings`, etc.
-3. Files matching the pattern `NNN_*.zig` in an `exercises/` directory
+The plugin automatically downloads the Ziglings repository to your Neovim data directory (`~/.local/share/nvim/ziglings` on Linux/macOS) when you first use any Ziglings command or open a `.zig` file.
 
-It reads the `.progress.txt` file to track your current progress and provides easy navigation between exercises.
+It tracks your progress through a `.progress.txt` file and provides easy navigation between exercises. When auto-build is enabled (default), saving any `.zig` file will trigger `zig build` and show you the results via notifications.
 
-When auto-build is enabled (default), saving any `.zig` file will trigger `zig build` and show you the results via notifications.
+All exercises are self-contained within the plugin's data directory, so you don't need to manually manage any Ziglings installation.
 
 ## Requirements
 
 - Neovim 0.8+
 - Zig compiler
-- [Ziglings exercises](https://github.com/ratfactor/ziglings)
+- Git (for downloading exercises)
 - Optional: [snacks.nvim](https://github.com/folke/snacks.nvim) for enhanced notifications
+
+## Getting Started
+
+1. Install the plugin with your package manager
+2. Start learning Zig: `:ZiglingsCurrent` to open the first exercise
+3. Edit and save to auto-build
+4. Use `:ZiglingsNext` when you complete an exercise
 
 ## License
 
