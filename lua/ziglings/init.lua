@@ -40,15 +40,7 @@ M.build = function() ensure_initialized(); return build.run_build() end
 M.toggle_auto_build = function() ensure_initialized(); return build.toggle_auto_build() end
 M.download = function(...) ensure_initialized(); return download.download_exercises(...) end
 
--- Auto-initialize immediately when plugin loads
+-- Auto-initialize immediately when required
 ensure_initialized()
-
--- Also auto-initialize when opening .zig files (backup)
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "zig",
-  once = true,
-  callback = ensure_initialized,
-  desc = "Auto-initialize ziglings.nvim for Zig files",
-})
 
 return M
