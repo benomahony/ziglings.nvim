@@ -15,6 +15,11 @@ end
 M.download_exercises = function(callback)
 	local exercises_path = M.get_exercises_path()
 
+	-- If directory exists but is incomplete, remove it first
+	if vim.fn.isdirectory(exercises_path) == 1 and not M.is_downloaded() then
+		vim.fn.delete(exercises_path, "rf")
+	end
+
 	-- Create directory if it doesn't exist
 	vim.fn.mkdir(exercises_path, "p")
 
