@@ -32,9 +32,9 @@ M.toggle_auto_build = function() ensure_initialized(); return build.toggle_auto_
 
 -- Auto-initialize on require if we're in a ziglings project
 local function auto_detect_and_init()
-  local cwd = vim.fn.getcwd()
-  if vim.fn.filereadable(cwd .. "/build.zig") == 1 then
-    local content = table.concat(vim.fn.readfile(cwd .. "/build.zig"), "\n")
+  local ziglings_path = config.find_ziglings_root()
+  if ziglings_path and vim.fn.filereadable(ziglings_path .. "/build.zig") == 1 then
+    local content = table.concat(vim.fn.readfile(ziglings_path .. "/build.zig"), "\n")
     if content:match("ziglings") or content:match("exercises") then
       ensure_initialized()
     end

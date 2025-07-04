@@ -1,14 +1,16 @@
 # ziglings.nvim
 
-A Neovim plugin for working with [Ziglings](https://ziglings.org/) exercises. Provides auto-building, exercise navigation, and progress tracking.
+A Neovim plugin for working with [Ziglings](https://ziglings.org/) exercises. Automatically detects your Ziglings installation and provides auto-building, exercise navigation, and progress tracking.
 
 ## Features
 
+- 🔍 **Auto-discovery**: Automatically finds your Ziglings installation
 - 🚀 **Auto-build on save**: Automatically runs `zig build` when you save `.zig` files
 - 📍 **Exercise navigation**: Jump between exercises with simple commands
 - 📊 **Progress tracking**: See which exercises you've completed
 - 🔔 **Smart notifications**: Get build results with full error context
 - ⚡ **Snacks.nvim integration**: Enhanced notifications if you use snacks.nvim
+- 🎯 **Zero configuration**: Works out of the box
 
 ## Installation
 
@@ -52,7 +54,6 @@ For custom configuration:
 
 ```lua
 require("ziglings").setup({
-  ziglings_path = nil, -- Auto-detect by default
   auto_build = true,
   notifications = {
     enabled = true,
@@ -91,7 +92,12 @@ require("ziglings").setup({
 
 ## How it works
 
-The plugin automatically detects your Ziglings installation by looking for `build.zig` files that contain "ziglings" or "exercises". It reads the `.progress.txt` file to track your current progress and provides easy navigation between exercises.
+The plugin automatically detects your Ziglings installation by searching:
+1. The current file's directory tree (if editing a Ziglings exercise)
+2. Common Ziglings locations: `~/ziglings`, `~/Code/ziglings`, `~/Code/learning/ziglings`, etc.
+3. Files matching the pattern `NNN_*.zig` in an `exercises/` directory
+
+It reads the `.progress.txt` file to track your current progress and provides easy navigation between exercises.
 
 When auto-build is enabled (default), saving any `.zig` file will trigger `zig build` and show you the results via notifications.
 

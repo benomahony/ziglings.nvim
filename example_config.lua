@@ -13,7 +13,7 @@
   name = "ziglings.nvim",
   config = function()
     require("ziglings").setup({
-      ziglings_path = "/Users/benomahony/Code/learning/ziglings", -- or let it auto-detect
+      -- Ziglings path is auto-detected
       auto_build = true,
       notifications = {
         enabled = true,
