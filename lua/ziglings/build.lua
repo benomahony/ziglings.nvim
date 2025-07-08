@@ -71,7 +71,13 @@ M.setup_autocmds = function()
 		pattern = "*.zig",
 		callback = function()
 			if M.auto_build_enabled and config.options.auto_build then
-				vim.defer_fn(M.run_build, 50)
+				local current_file = vim.fn.expand("%:p")
+				local exercises_path = download.get_exercises_path()
+
+				-- Only auto-build if we're in the ziglings exercises directory
+				if current_file:find(exercises_path, 1, true) then
+					vim.defer_fn(M.run_build, 50)
+				end
 			end
 		end,
 		desc = "Auto-build ziglings exercises on save",
