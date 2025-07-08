@@ -2,6 +2,11 @@ local M = {}
 
 local download = require("ziglings.download")
 
+M.set_progress = function(num)
+	local progress_file = download.get_exercises_path() .. "/.progress.txt"
+	vim.fn.writefile({ tostring(num) }, progress_file)
+end
+
 M.get_progress = function()
 	local progress_file = download.get_exercises_path() .. "/.progress.txt"
 	if vim.fn.filereadable(progress_file) == 1 then
@@ -122,7 +127,7 @@ M.goto_exercise = function(num)
 	end)
 end
 
-M.list_exercises = function()
+M.show_progress = function()
 	download.ensure_downloaded(function(success)
 		if not success then
 			return
@@ -130,28 +135,79 @@ M.list_exercises = function()
 
 		local files = M.get_exercise_files()
 		local current_file, current_num = M.current_exercise()
-
-		local lines = { "Ziglings Exercises:" }
+		local completed = 0
+		local total = #files
 
 		for _, file in ipairs(files) do
 			local num = tonumber(file:match("(%d+)"))
-			local name = vim.fn.fnamemodify(file, ":t:r")
-			local status = ""
-
 			if current_num and num < current_num then
-				status = " ✅"
-			elseif num == current_num then
-				status = " 🔵 (current)"
+				completed = completed + 1
 			end
-
-			table.insert(lines, string.format("%3d: %s%s", num, name, status))
 		end
 
-		vim.cmd("new")
-		vim.api.nvim_buf_set_lines(0, 0, -1, false, lines)
-		vim.bo.buftype = "nofile"
-		vim.bo.bufhidden = "wipe"
-		vim.bo.modifiable = false
+		local progress_text = string.format("Ziglings Progress: %d/%d exercises completed (%.1f%%)", 
+			completed, total, (completed / total) * 100)
+
+		if package.loaded["snacks"] then
+			require("snacks").notify(progress_text, {
+				title = "🎯 Learning Progress",
+				timeout = 3000,
+			})
+		else
+			vim.notify(progress_text, vim.log.levels.INFO)
+		end
+	end)
+end
+
+M.list_exercises = function()
+	download.ensure_downloaded(function(success)
+		if not success then
+			return
+		end
+
+		-- Show progress first
+		M.show_progress()
+
+		local files = M.get_exercise_files()
+		local current_file, current_num = M.current_exercise()
+
+		-- Simple items for snacks picker
+		local items = {}
+		local current_idx = 1
+		for i, file in ipairs(files) do
+			local num = tonumber(file:match("(%d+)"))
+			local name = vim.fn.fnamemodify(file, ":t:r")
+			
+			table.insert(items, {
+				text = string.format("%03d: %s", num, name),
+				file = file,
+				num = num,
+			})
+			
+			if num == current_num then
+				current_idx = i
+			end
+		end
+
+		if package.loaded["snacks"] then
+			require("snacks").picker.pick({
+				name = "ziglings",
+				title = "Select Ziglings Exercise", 
+				items = items,
+			})
+		else
+			-- Fallback to simple buffer list
+			local lines = { "Ziglings Exercises:" }
+			for _, item in ipairs(items) do
+				table.insert(lines, item.text)
+			end
+
+			vim.cmd("new")
+			vim.api.nvim_buf_set_lines(0, 0, -1, false, lines)
+			vim.bo.buftype = "nofile"
+			vim.bo.bufhidden = "wipe"
+			vim.bo.modifiable = false
+		end
 	end)
 end
 

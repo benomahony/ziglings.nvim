@@ -23,6 +23,34 @@ local function notify(msg, level, timeout)
 	end
 end
 
+local function advance_progress()
+	local exercises = require("ziglings.exercises")
+	local current_file, current_num = exercises.current_exercise()
+
+	if current_file and current_num then
+		local files = exercises.get_exercise_files()
+		local next_num = nil
+
+		for _, file in ipairs(files) do
+			local num = tonumber(file:match("(%d+)"))
+			if num and num > current_num then
+				next_num = num
+				break
+			end
+		end
+
+		if next_num then
+			exercises.set_progress(next_num)
+			notify(
+				string.format("🎉 Exercise %d completed! Advanced to exercise %d", current_num, next_num),
+				vim.log.levels.INFO
+			)
+		else
+			notify("🏆 Congratulations! You've completed all Ziglings exercises!", vim.log.levels.INFO)
+		end
+	end
+end
+
 M.run_build = function()
 	download.ensure_downloaded(function(success)
 		if not success then
@@ -46,6 +74,7 @@ M.run_build = function()
 					local output = result.stdout or ""
 					if output:match("PASSED") then
 						notify("✅ Exercise completed!", vim.log.levels.INFO)
+						advance_progress()
 					else
 						notify("✅ Build successful", vim.log.levels.INFO)
 					end
@@ -95,6 +124,8 @@ M.setup_autocmds = function()
 		exercises.open_current_exercise,
 		{ desc = "Current ziglings exercise" }
 	)
+	vim.keymap.set("n", keymaps.list_exercises, exercises.list_exercises, { desc = "List ziglings exercises" })
+	vim.keymap.set("n", keymaps.show_progress, exercises.show_progress, { desc = "Show ziglings progress" })
 	vim.keymap.set("n", keymaps.build, M.run_build, { desc = "Build ziglings" })
 	vim.keymap.set("n", keymaps.toggle_auto_build, M.toggle_auto_build, { desc = "Toggle auto-build" })
 	vim.keymap.set("n", keymaps.download, download.download_exercises, { desc = "Download ziglings exercises" })
@@ -116,6 +147,7 @@ M.setup_autocmds = function()
 		end
 	end, { desc = "Go to specific exercise", nargs = 1 })
 	vim.api.nvim_create_user_command("ZiglingsList", exercises.list_exercises, { desc = "List all exercises" })
+	vim.api.nvim_create_user_command("ZiglingsProgress", exercises.show_progress, { desc = "Show progress" })
 	vim.api.nvim_create_user_command("ZiglingsBuild", M.run_build, { desc = "Build current exercise" })
 	vim.api.nvim_create_user_command("ZiglingsToggle", M.toggle_auto_build, { desc = "Toggle auto-build" })
 	vim.api.nvim_create_user_command("ZiglingsDownload", function()

@@ -36,6 +36,7 @@ M.prev_exercise = function() ensure_initialized(); return exercises.prev_exercis
 M.current_exercise = function() ensure_initialized(); return exercises.open_current_exercise() end
 M.goto_exercise = function(...) ensure_initialized(); return exercises.goto_exercise(...) end
 M.list_exercises = function() ensure_initialized(); return exercises.list_exercises() end
+M.show_progress = function() ensure_initialized(); return exercises.show_progress() end
 M.build = function() ensure_initialized(); return build.run_build() end
 M.toggle_auto_build = function() ensure_initialized(); return build.toggle_auto_build() end
 M.download = function(...) ensure_initialized(); return download.download_exercises(...) end

@@ -63,6 +63,7 @@ For customization:
 - `<leader>zn` - Next exercise
 - `<leader>zp` - Previous exercise
 - `<leader>zc` - Current exercise
+- `<leader>zl` - List exercises (picker)
 - `<leader>zb` - Build
 - `<leader>zt` - Toggle auto-build
 - `<leader>zd` - Download exercises
